@@ -1,0 +1,366 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;   /* 스크롤 없음 */
+}
+
+/* 배경: 은은한 그라데이션 */
+body {
+  --ink: #3A2A40;
+  --ink-soft: #8A7290;
+  --line: rgba(58, 42, 64, 0.18);
+  background: linear-gradient(170deg, #FCF8FB 0%, #F7E9F0 40%, #ECDDF1 75%, #DCCBEA 100%);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+}
+
+/* ---------- 포스터 레이아웃 (기준 1920 × 1080) ---------- */
+
+.poster {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "top    top"
+    "stage  info"
+    "bottom bottom";
+  column-gap: 4vw;
+  padding: 3.4vh 3.4vw;
+}
+
+.top,
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: clamp(10px, 0.65vw, 13px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.top {
+  grid-area: top;
+  padding-bottom: 1.6vh;
+  border-bottom: 1px solid var(--line);
+  font-weight: bold;
+}
+
+.bottom {
+  grid-area: bottom;
+  padding-top: 1.6vh;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+/* 메인 그래픽 영역: 보이지 않는 틀 */
+.stage {
+  grid-area: stage;
+}
+
+/* 제목과 행사 정보 */
+.info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-size: clamp(48px, 6.6vw, 128px);
+  font-weight: bold;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin-top: 2.4vh;
+  font-size: clamp(18px, 1.5vw, 30px);
+}
+
+.desc {
+  margin-top: 2vh;
+  max-width: 30em;
+  font-size: clamp(13px, 0.85vw, 17px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.details {
+  margin-top: 4vh;
+  border-top: 1px solid var(--line);
+}
+
+.details div {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  padding: 1.3vh 0;
+  border-bottom: 1px solid var(--line);
+}
+
+dt {
+  font-size: clamp(10px, 0.65vw, 13px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+dd {
+  font-size: clamp(13px, 0.85vw, 17px);
+  font-weight: bold;
+}
+
+/* ---------- 꽃 ---------- */
+
+/* 위치: JS가 메인 그래픽 영역 안에 배치 */
+.flower {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.flower-size {
+  transform: scale(var(--fs, 1));
+}
+
+/* 꽃 전체가 천천히 좌우로 기울어짐: CSS 기본 애니메이션 */
+.flower-sway {
+  animation: sway 7s ease-in-out infinite alternate;
+}
+
+.flower:nth-of-type(2) .flower-sway {
+  animation-duration: 8.5s;
+  animation-delay: -3s;
+}
+
+@keyframes sway {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(6deg); }
+}
+
+/* 클릭하면 톡 튀는 반응 */
+.bloom.pulse {
+  animation: pulse 0.9s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* 꽃잎 펼침 정도: JS(인터랙션) */
+.petal {
+  position: absolute;
+  left: -28px;
+  top: -92px;
+  width: 56px;
+  height: 92px;
+  transform-origin: 50% 100%;
+}
+
+/* 꽃잎이 숨 쉬듯 커졌다 작아짐: CSS 기본 애니메이션 */
+.petal-skin {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.38) 0 1px, rgba(255, 255, 255, 0) 1px 7px),
+    linear-gradient(to top,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 238, 245, 0.8) 30%,
+      rgba(246, 186, 212, 0.55) 70%,
+      rgba(226, 176, 222, 0.15) 100%);
+  opacity: 0.9;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.petal:nth-child(2) .petal-skin { animation-delay: -1s; }
+.petal:nth-child(3) .petal-skin { animation-delay: -2s; }
+.petal:nth-child(4) .petal-skin { animation-delay: -3s; }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(0.96); }
+  50%      { transform: scale(1.04); }
+}
+
+.center {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 0%, #FBE3EE 55%, rgba(246, 196, 220, 0) 100%);
+  box-shadow: 0 0 14px 4px rgba(255, 220, 236, 0.8);
+}
+
+/* ---------- 나비 ---------- */
+
+/* 위치와 기울기: JS(인터랙션) */
+.butterfly {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 2;
+}
+
+.b-size {
+  transform: scale(var(--k, 1));
+}
+
+/* 날갯짓마다 살짝 솟았다 가라앉음: CSS 기본 애니메이션 */
+.b-bob {
+  perspective: 500px;
+  animation: bob 0.34s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(3px); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* 날개 접었다 펴기: CSS 기본 애니메이션 */
+.b-wing {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  animation: 0.34s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(214, 150, 184, 0.18));
+}
+
+.b-wing.left {
+  animation-name: flap-left;
+}
+
+.b-wing.right {
+  animation-name: flap-right;
+}
+
+@keyframes flap-left {
+  0%, 100% { transform: rotateY(8deg); }
+  50%      { transform: rotateY(72deg); }
+}
+
+@keyframes flap-right {
+  0%, 100% { transform: scaleX(-1) rotateY(8deg); }
+  50%      { transform: scaleX(-1) rotateY(72deg); }
+}
+
+/* 꽃에 앉으면 날갯짓이 아주 느려짐 */
+.butterfly.resting .b-wing,
+.butterfly.resting .b-bob {
+  animation-duration: 3.2s;
+}
+
+/* 유리처럼 투명한 날개: 몸 쪽은 흰빛, 끝으로 갈수록 연한 분홍·라벤더 */
+.wing-skin {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.45);
+  opacity: 0.72;
+}
+
+/* 윗날개: 크고 넓게, 비스듬히 위로 */
+.wing-skin.up {
+  left: -94px;
+  top: -70px;
+  width: 94px;
+  height: 70px;
+  transform-origin: 100% 100%;
+  transform: rotate(-26deg);
+  background: radial-gradient(ellipse at 100% 100%,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 236, 244, 0.5) 35%,
+    rgba(244, 188, 214, 0.32) 70%,
+    rgba(220, 180, 232, 0.1) 100%);
+}
+
+/* 아랫날개: 작고 둥글게, 비스듬히 아래로 */
+.wing-skin.low {
+  left: -58px;
+  top: -4px;
+  width: 58px;
+  height: 66px;
+  transform-origin: 100% 0;
+  transform: rotate(22deg);
+  background: radial-gradient(ellipse at 100% 0%,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 234, 243, 0.45) 35%,
+    rgba(238, 182, 212, 0.3) 70%,
+    rgba(214, 178, 232, 0.08) 100%);
+}
+
+.b-core {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 0%, #FBE3EE 60%, rgba(246, 196, 220, 0) 100%);
+  box-shadow: 0 0 12px 4px rgba(255, 220, 236, 0.85);
+}
+
+/* ---------- 작은 화면: 그래픽 위, 정보 아래 ---------- */
+
+@media (max-width: 860px) {
+  .poster {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas:
+      "top"
+      "stage"
+      "info"
+      "bottom";
+    padding: 20px;
+  }
+
+  .bottom span:last-child {
+    display: none;
+  }
+
+  .details {
+    margin-top: 2vh;
+  }
+}
+
+/* ---------- 움직임 감소 설정 ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .b-wing,
+  .b-bob {
+    animation-duration: 1.4s;
+  }
+
+  .butterfly.resting .b-wing,
+  .butterfly.resting .b-bob {
+    animation-duration: 5s;
+  }
+
+  .flower-sway,
+  .petal-skin,
+  .bloom.pulse {
+    animation: none;
+  }
+}

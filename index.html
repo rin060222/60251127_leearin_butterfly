@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Motion Study</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="poster">
+    <!-- 상단 라벨 -->
+    <header class="top">
+      <span>01 / Butterfly</span>
+      <span>Flutter · Hover · Alight</span>
+    </header>
+
+    <!-- 메인 그래픽 영역 (나비와 꽃은 이 영역 안에서만 움직임) -->
+    <section class="stage" aria-label="나비와 꽃 인터랙션 영역"></section>
+
+    <!-- 제목과 행사 정보 -->
+    <section class="info">
+      <h1>Animal<br>Motion<br>Study</h1>
+      <p class="subtitle">An Exploration of Movement</p>
+      <p class="desc">Exploring the rhythm, direction, and behavior of natural movement through geometric forms.</p>
+
+      <dl class="details">
+        <div><dt>Date</dt><dd>DEC 10, 2026</dd></div>
+        <div><dt>Time</dt><dd>10:00 AM – 06:00 PM</dd></div>
+        <div><dt>Place</dt><dd>DIGITAL ART EXHIBITION</dd></div>
+        <div><dt>Organized by</dt><dd>MYONGJI UNIVERSITY</dd></div>
+      </dl>
+    </section>
+
+    <!-- 하단 라벨 -->
+    <footer class="bottom">
+      <span>INTERACTIVE WEB EXPERIMENT / 2026</span>
+      <span>Hover a flower · Click to call the butterfly</span>
+    </footer>
+  </main>
+
+  <!-- 꽃: 꽃잎 타원 4개 + 꽃술 원 1개 = 도형 5개 -->
+  <div class="flower" data-x="0.32" data-y="0.64" data-size="1">
+    <div class="flower-size">
+      <div class="flower-sway">
+        <div class="bloom">
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flower" data-x="0.7" data-y="0.4" data-size="0.85">
+    <div class="flower-size">
+      <div class="flower-sway">
+        <div class="bloom">
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="petal"><div class="petal-skin"></div></div>
+          <div class="center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 나비: 날개 타원 4개 + 빛 원 1개 = 도형 5개 -->
+  <div class="butterfly">
+    <div class="b-size">
+      <div class="b-bob">
+        <div class="b-wing left">
+          <div class="wing-skin up"></div>
+          <div class="wing-skin low"></div>
+        </div>
+        <div class="b-wing right">
+          <div class="wing-skin up"></div>
+          <div class="wing-skin low"></div>
+        </div>
+        <div class="b-core"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
